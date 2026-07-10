@@ -170,3 +170,18 @@
 .chat-send-btn:hover {
   transform: scale(1.05);
 }
+
+@media (max-width: 768px) {
+  .messages-layout {
+    grid-template-columns: 1fr;
+  }
+  .chat-sidebar {
+    display: none; /* In a real app, you'd toggle this */
+  }
+  .messages-container {
+    padding: 1rem;
+  }
+  .chat-window-header h2 {
+    font-size: 1.1rem;
+  }
+}

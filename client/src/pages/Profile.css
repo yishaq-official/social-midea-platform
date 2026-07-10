@@ -86,3 +86,18 @@
   flex-direction: column;
   gap: 1.5rem;
 }
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 1rem;
+  }
+  .profile-header {
+    padding: 1.5rem;
+  }
+  .profile-stats {
+    gap: 1rem;
+  }
+  .profile-name {
+    font-size: 1.5rem;
+  }
+}
