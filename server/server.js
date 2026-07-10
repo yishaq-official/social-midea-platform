@@ -7,6 +7,9 @@ import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import postRoutes from './routes/postRoutes.js';
 import communityRoutes from './routes/communityRoutes.js';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import mongoSanitize from 'express-mongo-sanitize';
 
 dotenv.config();
 
@@ -38,6 +41,15 @@ io.on('connection', (socket) => {
 });
 
 // Middleware
+// Security Middleware
+app.use(helmet());
+app.use(mongoSanitize());
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+app.use('/api', limiter);
+
 app.use(cors());
 app.use(express.json());
 
