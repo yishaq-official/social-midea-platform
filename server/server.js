@@ -27,6 +27,11 @@ const io = new Server(httpServer, {
 io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
   
+  socket.on('send_message', (data) => {
+    // Broadcast message to everyone else
+    socket.broadcast.emit('receive_message', data);
+  });
+
   socket.on('disconnect', () => {
     console.log(`User disconnected: ${socket.id}`);
   });
