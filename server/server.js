@@ -8,9 +8,11 @@ import authRoutes from './routes/authRoutes.js';
 import postRoutes from './routes/postRoutes.js';
 import communityRoutes from './routes/communityRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
+import messageRoutes from './routes/messageRoutes.js';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import mongoSanitize from 'express-mongo-sanitize';
+import Message from './models/Message.js';
 
 dotenv.config();
 
@@ -31,9 +33,22 @@ const io = new Server(httpServer, {
 io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
   
-  socket.on('send_message', (data) => {
-    // Broadcast message to everyone else
-    socket.broadcast.emit('receive_message', data);
+  socket.on('join_chat', (room) => {
+    socket.join(room);
+  });
+
+  socket.on('send_private_message', async (data) => {
+    try {
+      const newMessage = await Message.create({
+        sender: data.sender,
+        receiver: data.receiver,
+        content: data.content
+      });
+      const populatedMessage = await newMessage.populate('sender', 'name avatar');
+      io.to(data.room).emit('receive_private_message', populatedMessage);
+    } catch (err) {
+      console.error('Socket message error:', err);
+    }
   });
 
   socket.on('disconnect', () => {
@@ -59,6 +74,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/communities', communityRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/messages', messageRoutes);
 
 import path from 'path';
 import { fileURLToPath } from 'url';
