@@ -98,6 +98,15 @@ export default function Feed() {
                 </div>
                 <div className="post-content">
                   {post.content}
+                  {post.media && post.media.length > 0 && (
+                    <div style={{ marginTop: '1rem', borderRadius: '8px', overflow: 'hidden' }}>
+                      <img 
+                        src={`http://localhost:5000${post.media[0]}`} 
+                        alt="Post media" 
+                        style={{ width: '100%', height: 'auto', display: 'block' }} 
+                      />
+                    </div>
+                  )}
                 </div>
                 <div className="post-actions">
                   <button 
