@@ -69,7 +69,7 @@ export default function Feed() {
           <Link to="/feed" className="feed-nav-link active">🏠 Home</Link>
           <Link to="/profile" className="feed-nav-link">👤 Profile</Link>
           <Link to="/messages" className="feed-nav-link">💬 Messages</Link>
-          <Link to="#" className="feed-nav-link">🎨 Communities</Link>
+          <Link to="/communities" className="feed-nav-link">🎨 Communities</Link>
           <button onClick={handleLogout} className="feed-nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', width: '100%', marginTop: 'auto' }}>
             🚪 Logout
           </button>

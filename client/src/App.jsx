@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import Feed from './pages/Feed';
 import Profile from './pages/Profile';
 import Messages from './pages/Messages';
+import Communities from './pages/Communities';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/feed" element={<Feed />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/messages" element={<Messages />} />
+      <Route path="/communities" element={<Communities />} />
     </Routes>
   );
 }
