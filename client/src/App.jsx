@@ -15,6 +15,7 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/feed" element={<Feed />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/profile/:id" element={<Profile />} />
       <Route path="/messages" element={<Messages />} />
       <Route path="/communities" element={<Communities />} />
     </Routes>
