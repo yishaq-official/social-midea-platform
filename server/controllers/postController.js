@@ -1,11 +1,36 @@
 import Post from '../models/Post.js';
 import User from '../models/User.js';
 
-// Get all posts for feed
+// Get all posts for feed (filtered by privacy)
 export const getPosts = async (req, res) => {
   try {
-    const posts = await Post.find()
-      .populate('user', 'name avatar')
+    let posts = await Post.find()
+      .populate('user', 'name avatar isPrivate followers')
+      .sort({ createdAt: -1 });
+
+    // Filter posts for privacy
+    // If we have req.user (which we should, if route is protected), use it
+    const currentUserId = req.user ? req.user._id.toString() : null;
+
+    posts = posts.filter(post => {
+      if (!post.user) return false;
+      if (currentUserId && post.user._id.toString() === currentUserId) return true;
+      if (!post.user.isPrivate) return true;
+      if (currentUserId && post.user.followers && post.user.followers.includes(currentUserId)) return true;
+      return false;
+    });
+
+    res.json(posts);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get posts for a specific user
+export const getUserPosts = async (req, res) => {
+  try {
+    const posts = await Post.find({ user: req.params.userId })
+      .populate('user', 'name avatar isPrivate')
       .sort({ createdAt: -1 });
     res.json(posts);
   } catch (error) {
